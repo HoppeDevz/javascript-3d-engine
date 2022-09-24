@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<body>
+
+    <head>
+
+        <script 
+            data-main="./build/index.js"
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js">
+        </script>
+    </head>
+
+    <div
+        style="width: 1024px; height: 768px; background-color: rgba(0,0,0, 0.4);"
+    >
+        <canvas
+
+            id="viewport"
+
+            width="1024"
+            height="768"
+        >
+        </canvas>
+    </div>
+
+    <!-- <script>
+
+        let updateElapsedTime = true;
+
+        const WIDTH = 1024;
+        const HEIGHT = 768;
+
+        const canvas = document.querySelector("#viewport");
+
+        const ctx = canvas.getContext('2d');
+
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+
+        const cube = [
+
+            // SOUTH
+            { 
+                p: [ 
+                    { x: 0.0, y: 0.0, z: 0.0 },
+                    { x: 0.0, y: 1.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 0.0 }
+                ]
+            },
+            {
+                p: [
+                    { x: 0.0, y: 0.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 0.0 },
+                    { x: 1.0, y: 0.0, z: 0.0 }
+                ]
+            },
+
+            // EAST                                                      
+			{
+
+                p: [
+                    { x: 1.0, y: 0.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 1.0 }
+                ]
+            },
+			{ 
+                
+                p: [
+                    { x: 1.0, y: 0.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 1.0 },
+                    { x: 1.0, y: 0.0, z: 1.0 }
+                ]
+            },
+
+            // NORTH                                                      
+			{
+
+                p: [
+                    { x: 1.0, y: 0.0, z: 1.0 },
+                    { x: 1.0, y: 1.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 1.0 }
+                ]
+            },
+			{ 
+                
+                p: [
+                    { x: 1.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 1.0 },
+                    { x: 0.0, y: 0.0, z: 1.0 }
+                ]
+            },
+
+            // WEST                                                    
+			{
+
+                p: [
+                    { x: 0.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 0.0 }
+                ]
+            },
+			{ 
+                
+                p: [
+                    { x: 0.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 0.0 },
+                    { x: 0.0, y: 0.0, z: 0.0 }
+                ]
+            },
+
+            // TOP                                                       
+			{
+
+                p: [
+                    { x: 0.0, y: 1.0, z: 1.0 },
+                    { x: 0.0, y: 1.0, z: 1.0 },
+                    { x: 1.0, y: 1.0, z: 1.0 }
+                ]
+            },
+			{ 
+                
+                p: [
+                    { x: 0.0, y: 1.0, z: 0.0 },
+                    { x: 1.0, y: 1.0, z: 1.0 },
+                    { x: 1.0, y: 1.0, z: 0.0 }
+                ]
+            },
+
+            // BOTTOM                                                       
+			{
+
+                p: [
+                    { x: 1.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 0.0, z: 0.0 }
+                ]
+            },
+			{ 
+                
+                p: [
+                    { x: 1.0, y: 0.0, z: 1.0 },
+                    { x: 0.0, y: 0.0, z: 0.0 },
+                    { x: 1.0, y: 0.0, z: 0.0 }
+                ]
+            },
+        ]
+
+        const fNear = 0.1;
+		const fFar = 1000.0;
+		const fFov = 90.0;
+		const fAspectRatio = canvas.height / canvas.width;
+		const fFovRad = 1.0 / Math.tan(fFov * 0.5 / 180.0 * Math.PI);
+
+        const matProj = [
+            [ fAspectRatio * fFovRad, 0, 0, 0 ],
+            [ 0, fFovRad, 0, 0 ],
+            [ 0, 0, 0, 1 ],
+            [ 0, 0, 0, 0]
+        ]
+
+        const makeRotationXmatrix = (fTheta, speed) => [
+            [ 1, 0, 0, 0 ],
+            [ 0, Math.cos(fTheta * speed), Math.sin(fTheta * speed), 0 ],
+            [ 0, -Math.sin(fTheta * speed), Math.cos(fTheta * speed), 0 ],
+            [ 0, 0, 0, 1 ]
+        ]
+
+        const makeRotationYmatrix = (fTheta, speed) => [
+            [ Math.cos(fTheta * speed), 0, Math.sin(fTheta * speed), 0 ],
+            [ 0, 1, 0, 0 ],
+            [ -Math.sin(fTheta * speed), 0, Math.cos(fTheta * speed), 0 ],
+            [ 0, 0, 0, 1 ]
+        ]
+
+        function multiplyMatrices(vertex, proj) {
+
+            const newVertex = { x: 0.0, y: 0.0, z: 0.0 };
+
+            newVertex.x = vertex.x * proj[0][0] + vertex.y * proj[1][0] + vertex.z * proj[2][0] + proj[3][0];
+            newVertex.y = vertex.x * proj[0][1] + vertex.y * proj[1][1] + vertex.z * proj[2][1] + proj[3][1];
+            newVertex.z = vertex.x * proj[0][2] + vertex.y * proj[1][2] + vertex.z * proj[2][2] + proj[3][2];
+
+            const w = vertex.x * proj[0][3] + vertex.y * proj[1][3] + vertex.z * proj[2][3] + proj[3][3];
+
+            if (w != 0) {
+
+                newVertex.x /= w;
+                newVertex.y /= w;
+                newVertex.z /= w;
+
+                return newVertex;
+            }
+
+            return vertex;
+        }
+
+        function draw(x, y, x2, y2) {
+
+            ctx.beginPath();
+            ctx.moveTo(WIDTH / 2 + x, HEIGHT / 2 - y);
+            ctx.lineTo(WIDTH / 2 + x2, HEIGHT / 2 - y2);
+            ctx.stroke();
+        }
+
+        function drawTriangle(vertex1, vertex2, vertex3) {
+            
+            draw(vertex1.x, vertex1.y,  vertex2.x, vertex2.y);
+            draw(vertex1.x, vertex1.y,  vertex3.x, vertex3.y);
+            draw(vertex3.x, vertex3.y,  vertex2.x, vertex2.y);
+        }
+
+        let elapsedTime = 0.0;
+
+        setInterval(() => {
+
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+            const fTheta = 1.0 * elapsedTime;
+
+            const rotx = makeRotationXmatrix(fTheta, 1.0);
+            const roty = makeRotationYmatrix(fTheta, 1.5);
+
+            for (const triangle of cube) {
+
+                const trinagleVerteces = JSON.parse(JSON.stringify(triangle.p));
+
+                const rotatedX = [
+                    multiplyMatrices(trinagleVerteces[0], rotx),
+                    multiplyMatrices(trinagleVerteces[1], rotx),
+                    multiplyMatrices(trinagleVerteces[2], rotx),
+                ]
+
+                const rotatedXY = [
+                    multiplyMatrices(rotatedX[0], roty),
+                    multiplyMatrices(rotatedX[1], roty),
+                    multiplyMatrices(rotatedX[2], roty),
+                ]
+
+                rotatedXY[0].z += 3.0;
+                rotatedXY[1].z += 3.0;
+                rotatedXY[2].z += 3.0;
+
+                const projected = [ 
+                    multiplyMatrices(rotatedXY[0], matProj),
+                    multiplyMatrices(rotatedXY[1], matProj),
+                    multiplyMatrices(rotatedXY[2], matProj)
+                ]
+
+                const camLookAt = { x:0.0, y:0.0, z:1.0 };
+
+                projected[0].x *= WIDTH / 2;
+                projected[0].y *= HEIGHT / 2;
+
+                projected[1].x *= WIDTH / 2;
+                projected[1].y *= HEIGHT / 2;
+
+                projected[2].x *= WIDTH / 2;
+                projected[2].y *= HEIGHT / 2;
+
+                drawTriangle(projected[0], projected[1], projected[2]);
+            }
+
+            elapsedTime += 0.01;
+            
+        }, 20);
+
+        // setInterval(() => {
+
+        //     ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        //     // const fTheta = 1.0 * elapsedTime;
+
+        //     // const rotXMatrix = makeRotationXmatrix(fTheta, 1.3);
+
+        //     for (verteces of cube) {
+
+
+        //         const vertecesCloneds = JSON.parse(JSON.stringify(verteces.p));
+
+        //         vertecesCloneds[0].z += 2.0;
+        //         vertecesCloneds[1].z += 2.0;
+        //         vertecesCloneds[2].z += 2.0;
+
+        //         const projected = [ multiplyMatrices(vertecesCloneds[0], matProj), multiplyMatrices(vertecesCloneds[1], matProj), multiplyMatrices(vertecesCloneds[2], matProj)]
+
+        //         projected[0].x += 1.0; projected[0].y += 1.0; projected[0].z += 1.0;
+        //         projected[1].x += 1.0; projected[1].y += 1.0; projected[1].z += 1.0;
+        //         projected[2].x += 1.0; projected[2].y += 1.0; projected[2].z += 1.0;
+
+
+        //         projected[0].x *= 0.5 * WIDTH;
+        //         projected[0].y *= 0.5 * HEIGHT;
+
+        //         projected[1].x *= 0.5 * WIDTH;
+        //         projected[1].y *= 0.5 * HEIGHT;
+
+        //         projected[2].x *= 0.5 * WIDTH;
+        //         projected[2].y *= 0.5 * HEIGHT;
+
+
+        //         console.log({ projected });
+
+        //         drawTriangle(projected[0], projected[1], projected[2]);
+
+                
+        //     }
+
+
+
+        //     // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        //     elapsedTime++;
+        // }, 1000);
+
+    </script> -->
+</body>
