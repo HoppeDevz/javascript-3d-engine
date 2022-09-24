@@ -38,7 +38,7 @@ export function initialize(ctx: CanvasRenderingContext2D, width: number, height:
     const scene = new Scene();
     const cube = new Model(CubeVerteces);
 
-    cube.lineColor = "pink";
+    cube.lineColor = "orange";
 
     scene.addModel(cube);
 

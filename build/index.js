@@ -19,7 +19,7 @@ define(["require", "exports", "./classes/model", "./classes/scene", "./data/cube
         exports.HEIGHT = height;
         const scene = new scene_1.Scene();
         const cube = new model_1.Model(cube_1.CubeVerteces);
-        cube.lineColor = "pink";
+        cube.lineColor = "orange";
         scene.addModel(cube);
         scene.render();
     }

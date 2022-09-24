@@ -57,6 +57,8 @@ export class Scene {
 
                 for (let i = 0; i < model.verteces.length; i = i + 3) {
 
+
+
                     const trinagleVerteces = [
                         model.verteces[i],
                         model.verteces[i + 1],
@@ -79,7 +81,6 @@ export class Scene {
                     rotatedXY[1].z += 3.0;
                     rotatedXY[2].z += 3.0;
 
-
                     // CROSS PRODUCT
                     // Nx = Ay.Bz - Az.By
                     // Ny = Az.Bx - Ax.Bz
@@ -92,25 +93,25 @@ export class Scene {
 
                             rotatedXY[1].x - rotatedXY[0].x,
                             rotatedXY[1].y - rotatedXY[0].y,
-                            rotatedXY[1].z - rotatedXY[0].z,
+                            rotatedXY[1].z - rotatedXY[0].z
                         );
                         const secondVector = new Vector(
     
-                            rotatedXY[2].x - rotatedXY[0].x,
-                            rotatedXY[2].y - rotatedXY[0].y,
-                            rotatedXY[2].z - rotatedXY[0].z,
+                            rotatedXY[2].x - rotatedXY[1].x,
+                            rotatedXY[2].y - rotatedXY[1].y,
+                            rotatedXY[2].z - rotatedXY[1].z
                         );
-    
+                            
+                        const cameraToPointVector = new Vector(
+                            ((rotatedXY[0].x + rotatedXY[1].x + rotatedXY[2].x) / 3) - this.cameraCoords.xOffset,
+                            ((rotatedXY[0].y + rotatedXY[1].y + rotatedXY[2].y) / 3) - this.cameraCoords.yOffset,
+                            ((rotatedXY[0].z + rotatedXY[1].z + rotatedXY[2].z) / 3) - this.cameraCoords.zOffset,
+                        );
+
                         const normalToPlane = new Vector(
                             (firstVector.yOffset * secondVector.zOffset) - (firstVector.zOffset * secondVector.yOffset),
                             (firstVector.zOffset * secondVector.xOffset) - (firstVector.xOffset * secondVector.zOffset),
                             (firstVector.xOffset * secondVector.yOffset) - (firstVector.yOffset * secondVector.xOffset)
-                        );
-
-                        const cameraToPointVector = new Vector(
-                            rotatedXY[1].x - this.cameraCoords.xOffset,
-                            rotatedXY[1].y - this.cameraCoords.yOffset,
-                            rotatedXY[1].z - this.cameraCoords.zOffset,
                         );
 
                         const similarityBetweenVectors = 
@@ -118,7 +119,7 @@ export class Scene {
                             (cameraToPointVector.yOffset * normalToPlane.yOffset) +
                             (cameraToPointVector.zOffset * normalToPlane.zOffset)
 
-                        if (similarityBetweenVectors < 0.0) {
+                        if (similarityBetweenVectors < 0) {
 
                             const projected = [ 
                                 multiply_vertex_to_4x4_matrix(rotatedXY[0], matProj),

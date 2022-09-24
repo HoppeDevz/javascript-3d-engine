@@ -51,13 +51,13 @@ define(["require", "exports", "../index", "../utils/drawFunctions", "../utils/ma
                         // Nz = Ax.By - Ay.Bx
                         if (this.cullingOccultFaces) {
                             const firstVector = new vector_1.Vector(rotatedXY[1].x - rotatedXY[0].x, rotatedXY[1].y - rotatedXY[0].y, rotatedXY[1].z - rotatedXY[0].z);
-                            const secondVector = new vector_1.Vector(rotatedXY[2].x - rotatedXY[0].x, rotatedXY[2].y - rotatedXY[0].y, rotatedXY[2].z - rotatedXY[0].z);
+                            const secondVector = new vector_1.Vector(rotatedXY[2].x - rotatedXY[1].x, rotatedXY[2].y - rotatedXY[1].y, rotatedXY[2].z - rotatedXY[1].z);
+                            const cameraToPointVector = new vector_1.Vector(((rotatedXY[0].x + rotatedXY[1].x + rotatedXY[2].x) / 3) - this.cameraCoords.xOffset, ((rotatedXY[0].y + rotatedXY[1].y + rotatedXY[2].y) / 3) - this.cameraCoords.yOffset, ((rotatedXY[0].z + rotatedXY[1].z + rotatedXY[2].z) / 3) - this.cameraCoords.zOffset);
                             const normalToPlane = new vector_1.Vector((firstVector.yOffset * secondVector.zOffset) - (firstVector.zOffset * secondVector.yOffset), (firstVector.zOffset * secondVector.xOffset) - (firstVector.xOffset * secondVector.zOffset), (firstVector.xOffset * secondVector.yOffset) - (firstVector.yOffset * secondVector.xOffset));
-                            const cameraToPointVector = new vector_1.Vector(rotatedXY[1].x - this.cameraCoords.xOffset, rotatedXY[1].y - this.cameraCoords.yOffset, rotatedXY[1].z - this.cameraCoords.zOffset);
                             const similarityBetweenVectors = (cameraToPointVector.xOffset * normalToPlane.xOffset) +
                                 (cameraToPointVector.yOffset * normalToPlane.yOffset) +
                                 (cameraToPointVector.zOffset * normalToPlane.zOffset);
-                            if (similarityBetweenVectors < 0.00) {
+                            if (similarityBetweenVectors < 0) {
                                 const projected = [
                                     (0, multiply_vertex_to_4x4_matrix_1.multiply_vertex_to_4x4_matrix)(rotatedXY[0], matProj),
                                     (0, multiply_vertex_to_4x4_matrix_1.multiply_vertex_to_4x4_matrix)(rotatedXY[1], matProj),
