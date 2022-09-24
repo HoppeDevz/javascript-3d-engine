@@ -54,5 +54,5 @@ if (canvas) {
 
     console.log("Initializing...");
 
-    initialize(canvas.getContext('2d'), 1024, 768);
+    initialize(canvas.getContext('2d'), 800, 600);
 }

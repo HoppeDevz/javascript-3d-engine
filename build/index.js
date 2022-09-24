@@ -28,6 +28,6 @@ define(["require", "exports", "./classes/color", "./classes/material", "./classe
     const canvas = document.querySelector("#viewport");
     if (canvas) {
         console.log("Initializing...");
-        initialize(canvas.getContext('2d'), 1024, 768);
+        initialize(canvas.getContext('2d'), 800, 600);
     }
 });

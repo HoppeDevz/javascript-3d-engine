@@ -16,12 +16,14 @@ if (canvas) {
     // Initializing...
     initialize(canvas.getContext('2d'), width, height);
 
-    const myScene = new Scene();
-    const myCube = new Model(CubeVerteces);
+    const scene = new Scene();
 
-    cube.lineColor = "orange";
+    const cubeColor = new Color(255, 0, 0, 255);
+    const cubeMaterial = new Material(cubeColor);
+    const cube = new Model(CubeVerteces, cubeMaterial);
 
     scene.addModel(cube);
+
     scene.render();
 
     // THIS CODE RENDERS THE ORANGE CUBE BELLOW //
@@ -30,5 +32,5 @@ if (canvas) {
 
 - Result of Example Code:
 <p align="center">
-  <img src="https://s4.gifyu.com/images/msedge_Mv59zzm3v3.gif" />
+  <img src="https://s5.gifyu.com/images/msedge_pf2lcOa10A.gif" />
 </p>
