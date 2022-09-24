@@ -1,4 +1,5 @@
 import { CameraSettings, CustomCameraSettings } from "./@types/cameraSettings";
+import { Material } from "./classes/material";
 import { Model } from "./classes/model";
 import { Scene } from "./classes/scene";
 import { CubeVerteces } from "./data/cube";
@@ -36,9 +37,9 @@ export function initialize(ctx: CanvasRenderingContext2D, width: number, height:
     HEIGHT = height;
 
     const scene = new Scene();
-    const cube = new Model(CubeVerteces);
 
-    cube.lineColor = "orange";
+    const cubeMaterial = new Material("orange");
+    const cube = new Model(CubeVerteces, cubeMaterial);
 
     scene.addModel(cube);
 

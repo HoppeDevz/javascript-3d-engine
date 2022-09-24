@@ -69,7 +69,7 @@ define(["require", "exports", "../index", "../utils/drawFunctions", "../utils/ma
                                 projected[1].y *= index_1.HEIGHT / 2;
                                 projected[2].x *= index_1.WIDTH / 2;
                                 projected[2].y *= index_1.HEIGHT / 2;
-                                (0, drawFunctions_1.drawTriangle)(projected[0], projected[1], projected[2], model.lineColor);
+                                (0, drawFunctions_1.fillTriangle)(projected[0], projected[1], projected[2], model.material.color);
                             }
                         }
                         else {
@@ -84,7 +84,7 @@ define(["require", "exports", "../index", "../utils/drawFunctions", "../utils/ma
                             projected[1].y *= index_1.HEIGHT / 2;
                             projected[2].x *= index_1.WIDTH / 2;
                             projected[2].y *= index_1.HEIGHT / 2;
-                            (0, drawFunctions_1.drawTriangle)(projected[0], projected[1], projected[2], model.lineColor);
+                            (0, drawFunctions_1.drawTriangle)(projected[0], projected[1], projected[2], model.material.color);
                         }
                     }
                 }

@@ -1,13 +1,16 @@
+import { Material } from "./material";
 import { Vertex } from "./vertex";
 
 export class Model {
 
-    public lineColor: string;
+    public material: Material;
     public verteces: Vertex[];
 
-    constructor(verteces: Vertex[], lineColor?: string) {
+    constructor(verteces: Vertex[], material?: Material) {
 
-        this.lineColor = lineColor || "black";
+        const modelMaterial = material ? material : new Material();
+
+        this.material = modelMaterial;
         this.verteces = verteces;
     }
 }

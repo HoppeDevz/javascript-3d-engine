@@ -1,4 +1,4 @@
-define(["require", "exports", "./classes/model", "./classes/scene", "./data/cube"], function (require, exports, model_1, scene_1, cube_1) {
+define(["require", "exports", "./classes/material", "./classes/model", "./classes/scene", "./data/cube"], function (require, exports, material_1, model_1, scene_1, cube_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.initialize = exports.camSettings = exports.elapsedTime = exports.HEIGHT = exports.WIDTH = exports.context = void 0;
@@ -18,8 +18,8 @@ define(["require", "exports", "./classes/model", "./classes/scene", "./data/cube
         exports.WIDTH = width;
         exports.HEIGHT = height;
         const scene = new scene_1.Scene();
-        const cube = new model_1.Model(cube_1.CubeVerteces);
-        cube.lineColor = "orange";
+        const cubeMaterial = new material_1.Material("orange");
+        const cube = new model_1.Model(cube_1.CubeVerteces, cubeMaterial);
         scene.addModel(cube);
         scene.render();
     }

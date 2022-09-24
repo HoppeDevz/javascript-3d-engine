@@ -1,5 +1,5 @@
 import { camSettings, context, HEIGHT, WIDTH } from "../index";
-import { drawTriangle } from "../utils/drawFunctions";
+import { drawTriangle, fillTriangle } from "../utils/drawFunctions";
 import { makeProjectionMatrix } from "../utils/makeProjMatrix";
 import { makeRotationXMatrix, makeRotationYMatrix } from "../utils/makeRotationMatrices";
 import { multiply_vertex_to_4x4_matrix } from "../utils/multiply_vertex_to_4x4_matrix";
@@ -136,7 +136,7 @@ export class Scene {
                             projected[2].x *= WIDTH / 2;
                             projected[2].y *= HEIGHT / 2;
             
-                            drawTriangle(projected[0], projected[1], projected[2], model.lineColor);
+                            fillTriangle(projected[0], projected[1], projected[2], model.material.color);
                         }
 
                     } else {
@@ -157,7 +157,7 @@ export class Scene {
                         projected[2].x *= WIDTH / 2;
                         projected[2].y *= HEIGHT / 2;
         
-                        drawTriangle(projected[0], projected[1], projected[2], model.lineColor);
+                        drawTriangle(projected[0], projected[1], projected[2], model.material.color);
                     }
                 }
             }
