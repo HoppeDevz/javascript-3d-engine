@@ -1,10 +1,11 @@
+import { Color } from "./color";
 
 export class Material {
 
-    public color: string;
+    public color: Color;
 
-    constructor(color?: string) {
+    constructor(color?: Color) {
 
-        this.color = color || "red";
+        this.color = color || { r: 255, g: 0, b: 0, a: 255 };
     }
 }

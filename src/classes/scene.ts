@@ -1,4 +1,5 @@
 import { camSettings, context, HEIGHT, WIDTH } from "../index";
+import { colorToString } from "../utils/colorToString";
 import { drawTriangle, fillTriangle } from "../utils/drawFunctions";
 import { makeProjectionMatrix } from "../utils/makeProjMatrix";
 import { makeRotationXMatrix, makeRotationYMatrix } from "../utils/makeRotationMatrices";
@@ -8,6 +9,7 @@ import { Vector } from "./vector";
 
 export class Scene {
 
+    public lightDirection: Vector;
     public cameraCoords: Vector;
     public cameraLookAt: Vector;
 
@@ -18,6 +20,7 @@ export class Scene {
 
     constructor() {
 
+        this.lightDirection = new Vector(0, 0, -1);
         this.cameraCoords = new Vector(0, 0, 0);
         this.cameraLookAt = new Vector(0, 0, 1);
 
@@ -121,6 +124,124 @@ export class Scene {
 
                         if (similarityBetweenVectors < 0) {
 
+                            const similarityLight = 
+                                (this.lightDirection.xOffset * normalToPlane.xOffset) +
+                                (this.lightDirection.yOffset * normalToPlane.yOffset) +
+                                (this.lightDirection.zOffset * normalToPlane.zOffset)
+
+                            const pixel_bw = Math.ceil(similarityLight * 13);
+                            let subtract = 0;
+
+                            switch(pixel_bw) {
+
+                                case 0: {
+
+                                    subtract = 160; 
+                                    break;
+                                }
+                                case 1: {
+
+                                    subtract = 150; 
+                                    break;
+                                }
+                                case 2: {
+
+                                    subtract = 140; 
+                                    break;
+                                }
+                                case 3: {
+
+                                    subtract = 130; 
+                                    break;
+                                }
+                                case 4: {
+
+                                    subtract = 120; 
+                                    break;
+                                }
+                                case 5: {
+
+                                    subtract = 110; 
+                                    break;
+                                }
+                                case 6: {
+
+                                    subtract = 100; 
+                                    break;
+                                }
+                                case 7: {
+
+                                    subtract = 100; 
+                                    break;
+                                }
+                                case 8: {
+
+                                    subtract = 90; 
+                                    break;
+                                }
+                                case 9: {
+
+                                    subtract = 80; 
+                                    break;
+                                }
+                                case 10: {
+
+                                    subtract = 70; 
+                                    break;
+                                }
+                                case 11: {
+
+                                    subtract = 60; 
+                                    break;
+                                }
+                                case 12: {
+
+                                    subtract = 50; 
+                                    break;
+                                }
+                                case 13: {
+                                    subtract = 40; 
+                                    break;
+                                }
+                                case 14: {
+                                    subtract = 30; 
+                                    break;
+                                }
+                                case 15: {
+                                    subtract = 20; 
+                                    break;
+                                }
+                                case 16: {
+                                    subtract = 10; 
+                                    break;
+                                }
+                                case 17: {
+                                    subtract = 5; 
+                                    break;
+                                }
+                                case 18: {
+                                    subtract = 0; 
+                                    break;
+                                }
+                                default: {
+                                    
+                                    subtract = 255; 
+                                    break;
+                                }
+                                
+                            }
+
+                            const clonedMaterial = JSON.parse(JSON.stringify(model.material))
+
+                            clonedMaterial.color.r = model.material.color.r - subtract < 0 ? 0 : model.material.color.r - subtract;
+                            clonedMaterial.color.g = model.material.color.g - subtract < 0 ? 0 : model.material.color.g - subtract;
+                            clonedMaterial.color.g = model.material.color.b - subtract < 0 ? 0 : model.material.color.b - subtract;
+
+                            if (clonedMaterial.color.r == 0 && clonedMaterial.color.g == 0 && clonedMaterial.color.b == 0) {
+
+                                console.log(similarityLight, subtract);
+                            }
+
                             const projected = [ 
                                 multiply_vertex_to_4x4_matrix(rotatedXY[0], matProj),
                                 multiply_vertex_to_4x4_matrix(rotatedXY[1], matProj),
@@ -135,8 +256,8 @@ export class Scene {
             
                             projected[2].x *= WIDTH / 2;
                             projected[2].y *= HEIGHT / 2;
-            
-                            fillTriangle(projected[0], projected[1], projected[2], model.material.color);
+
+                            fillTriangle(projected[0], projected[1], projected[2], colorToString(clonedMaterial.color) );
                         }
 
                     } else {
@@ -157,7 +278,7 @@ export class Scene {
                         projected[2].x *= WIDTH / 2;
                         projected[2].y *= HEIGHT / 2;
         
-                        drawTriangle(projected[0], projected[1], projected[2], model.material.color);
+                        drawTriangle(projected[0], projected[1], projected[2], colorToString(model.material.color) );
                     }
                 }
             }
